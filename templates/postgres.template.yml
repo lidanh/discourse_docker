@@ -3,8 +3,8 @@ params:
   db_shared_buffers: "256MB"
   db_work_mem: "10MB"
   db_default_text_search_config: "pg_catalog.english"
-  db_name: discourse
-  db_user: discourse
+  db_name: game_of_forums
+  db_user: game_of_forums
   db_wal_level: minimal
   db_max_wal_senders: 0
   db_checkpoint_segments: 6
