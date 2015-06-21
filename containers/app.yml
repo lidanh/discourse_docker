@@ -69,6 +69,8 @@ env:
 
   DISCOURSE_DB_NAME: game_of_forums
 
+  DISCOURSE_LOAD_MINI_PROFILER: false
+
 ## These containers are stateless, all data is stored in /shared
 volumes:
   - volume:
