@@ -71,6 +71,9 @@ env:
 
   DISCOURSE_LOAD_MINI_PROFILER: false
 
+  NEW_RELIC_LICENSE_KEY: <your_license_key>
+  NEW_RELIC_APP_NAME: <name_of_your_forums>
+
 ## These containers are stateless, all data is stored in /shared
 volumes:
   - volume:
@@ -85,11 +88,6 @@ volumes:
 hooks:
   after_code:
     - exec:
-        cd: $home/plugins
-        cmd:
-          - mkdir -p plugins
-          - git clone https://github.com/discourse/docker_manager.git
-    - exec:
         cd: $home
         cmd:
           - git remote remove origin
@@ -99,6 +97,12 @@ hooks:
           - git remote set-branches --add origin master
           - git branch -u origin/master master
           - git reset --hard origin/master
+    - exec:
+        cd: $home/plugins
+        cmd:
+          - mkdir -p plugins
+          - git clone https://github.com/discourse/docker_manager.git
+          - git clone https://github.com/davidcelis/new_relic-discourse.git
 
 ## Remember, this is YAML syntax - you can only have one block with a name
 run:
@@ -111,6 +115,7 @@ run:
   - exec: su postgres -c 'psql game_of_forums -c "DELETE FROM posts;"'
   - exec: su postgres -c 'psql game_of_forums -c "DELETE FROM post_search_data;"'
   - exec: su postgres -c 'psql game_of_forums -c "DELETE FROM categories;"'
+  # - exec: curl -H "x-api-key:<your_api_key_not_license>" -d "deployment[app_name]=<name_of_your_forums>" -d "deployment[description]=This is an app id deployment" https://api.newrelic.com/deployments.xml
 
   ## If you want to set the 'From' email address for your first registration, uncomment and change:
   #- exec: rails r "SiteSetting.notification_email='info@unconfigured.discourse.org'"
